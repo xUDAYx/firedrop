@@ -1,13 +1,19 @@
 @import "https://use.typekit.net/rcr1opg.css";
-
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 .text-effect{
   opacity: 0;
+  filter: blur(5px);
+  transform: translateX(-100%);
   transition: all 1s;
 }
 
 .show{
   opacity: 1;
+  filter: blur(0);
+  transform: translateX(0);
 }
 
 
@@ -1197,6 +1203,10 @@ video {
 }
 .hidden {
   display: none;
+}
+
+.block {
+  display: block;
 }
 .aspect-video {
   aspect-ratio: 16 / 9;

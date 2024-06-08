@@ -14,3 +14,15 @@ const observer = new IntersectionObserver((entries) => {
 const hiddenElement = document.querySelectorAll(".text-effect");
 hiddenElement.forEach((el) => observer.observe(el));
 
+const hoverText = document.querySelector(".group");
+const hoverImage = document.getElementById("hoverImage");
+
+hoverText.addEventListener("mouseenter", () => {
+  hoverImage.classList.remove("hidden");
+});
+
+hoverText.addEventListener("mouseleave", () => {
+  hoverImage.classList.add("hidden");
+});
+
+
