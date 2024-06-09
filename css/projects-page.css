@@ -3,6 +3,9 @@
 @tailwind components;
 @tailwind utilities;
     
+
+
+
 *,
 :before,
 :after {
@@ -36,6 +39,38 @@ abbr:where([title]) {
   -webkit-text-decoration: underline dotted;
   text-decoration: underline dotted;
 }
+
+
+
+.price-tag {
+  position: absolute; /* Use standard CSS instead of @apply */
+  top: 0;
+  right: 0;
+  background-color: #16a34a; /* Use standard hex color code instead of Tailwind color */
+  color: white;
+  padding: 5px 10px; /* Use rem units for better accessibility */
+  border-bottom-left-radius: 0.5rem;
+  z-index: 10; /* Use standard CSS property */
+}
+
+
+/* Ensure the article element's relative positioning is set */
+article {
+  position: relative;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 h1,
 h2,
 h3,
