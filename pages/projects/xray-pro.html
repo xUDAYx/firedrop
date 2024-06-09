@@ -47,6 +47,9 @@
 <body>
     
     
+  
+
+
 
   <global-data permalink="https://firedrop.top/" vimeo="" youtube="" free="" next="" prev="">
   </global-data>
@@ -166,7 +169,153 @@ fireauth.iframe.AuthRelay.initialize();
   </ul>
 </nav>
 
+  <main class="container">
 
+
+	<div class="flex w-full justify-between">
+
+
+		<article itemscope="" itemtype="http://schema.org/Article" class="w-full">
+			<meta itemprop="datePublished" content="2023-03-01 13:08:58 -0700 -0700">
+			<meta itemprop="dateModified" content="2023-03-01 13:08:58 -0700 -0700">
+			<meta itemprop="image" content="img/featured.png">
+			<meta itemprop="publisher" content="fireship.io">
+
+
+			<header>
+
+				
+				
+				<div itemprop="video" itemscope="" itemtype="http://schema.org/VideoObject">
+					<iframe class="w-full aspect-video" src="https://www.youtube.com/embed/26Mayv5JPz0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+					<meta itemprop="embedUrl" content="https://www.youtube.com/embed/26Mayv5JPz0">
+					<meta itemprop="thumbnailUrl" content="">
+					<meta itemprop="description" content="Useful techniques for editing videos with FFmpeg">
+					<meta itemprop="uploadDate" content="2023-03-01 13:08:58 -0700 -0700">
+					<meta itemprop="publisher" content="Fireship">
+				</div>
+				
+
+				
+
+				<div class="bg-gray6 py-5 px-3 rounded-lg mb-4 flex justify-between mt-3">
+
+					
+					
+					<a class="flex items-center no-underline" itemprop="author" name="Jeff Delaney" href="/contributors/jeff-delaney/">
+						<img class="w-10 h-10 rounded-full block" src="images/jeff-delaney.webp" alt="Jeff Delaney avatar">
+						<span class="flex flex-col ml-2">
+							<span class="no-underline">By Jeff Delaney</span>
+							<span class="text-xs text-gray4">Posted <time itemprop="dateModified">Mar 1, 2023</time>
+						</span>
+	
+					</span></a>
+
+					
+					<span>
+						
+							<a href="/tags/linux"><span class="tag tag-linux">#linux</span></a>
+						
+
+						
+					</span>
+					
+				
+				</div>
+
+			</header>
+
+
+
+			
+			<section class="prose dark:prose-invert max-w-full lesson-content" itemprop="articleBody">
+				
+
+
+				<h1 itemprop="name headline" id="programmatic-video-editing-with-ffmpeg" class="gradient-text">
+					Programmatic Video Editing with FFmpeg
+				</h1>
+
+
+				<p>As a YouTuber, one of my biggest time sucks is video editing, so I recently wrote several video editing scripts with <a href="https://ffmpeg.org/">FFmpeg</a> to increse my productivity. It is a popular command line tool that can convert, transform,  and filter nearly any multimedia format (over 100+ codecs supported).</p>
+<p>In the following lesson, we’ll look at a collection of useful techniques for working with FFmpeg that you can use to build your own video editing utilities or apps.</p>
+<h2 id="useful-ffmpeg-techniques">Useful FFmpeg Techniques</h2>
+<h3 id="convert-a-file-to-a-different-format">Convert a File to a Different Format</h3>
+<p>The most basic thing you can do with FFmpeg is convert a file to a different format. Use the ffmpeg command-line tool with the following syntax:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ffmpeg -i in.mov out.mp4
+</span></span></code></pre></div><p>It knows how to target the proper codec based on the file extension, like <code>.mp4</code>, <code>.mov</code>, <code>.avi</code>, etc. However, you can specify a format if needed.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ffmpeg -i in.avi -f mp4 out.mp4
+</span></span></code></pre></div><h3 id="extract-audio-from-a-video-file">Extract Audio from a Video File</h3>
+<p>The <code>-vn</code> option tells FFmpeg to disable video processing and extract only the audio stream. The <code>-acodec</code> copy option tells FFmpeg to copy the audio codec directly from the input file to the output file, without reencoding it. This helps to preserve the original quality of the audio.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ffmpeg -i in.mp4 -vn -acodec copy out.mp3
+</span></span></code></pre></div><h3 id="create-a-high-quality-animated-gif">Create a High-Quality Animated Gif</h3>
+<p>Gif files can get huge if you're not careful, so it's important to scale down your video before doing a conversion.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ffmpeg -i in.mp4 -vf <span class="s2">"scale=320:-1,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse"</span> out.gif
+</span></span></code></pre></div><p>This command looks crazy, let’s break it down:</p>
+<p>The <code>scale</code> filter resizes the video to a width of 320 pixels, while maintaining the original aspect ratio.</p>
+<p>The <code>split</code> filter splits the video stream into two branches, one to generate the palette and the other to apply it.</p>
+<p>The <a href="https://ffmpeg.org/ffmpeg-filters.html#palettegen-1">palettegen</a> filter creates a color palette based on the input video and and outputs the palette as a video stream, which is passed to the paletteuse filter along with the original video stream.</p>
+<p>Additional ideas for Gif optimization are discussed here by <a href="https://engineering.giphy.com/how-to-make-gifs-with-ffmpeg/">Giphy Engineering</a>.</p>
+<h3 id="add-subtitles-to-a-video">Add Subtitles to a Video</h3>
+<p>This example assumes you have an existing SRT or WebVTT file with capations and timestamps for your video. First, use FFmpeg to covert it to ASS format (Advanced SubStation Alpha).</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ffmpeg -i in.srt smart.ass
+</span></span></code></pre></div><p>Now simply run it with the <code>ass</code> filter and you’ve got captions overlayed on your video.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ffmpeg -i in.mp4 -vf <span class="nv">ass</span><span class="o">=</span>smart.ass out.mp4
+</span></span></code></pre></div><h3 id="using-ffmpeg-in-firebase-cloud-functions">Using FFmpeg in Firebase Cloud Functions</h3>
+<p>FFmpeg is available in the Firebase Cloud Functions runtime. You can invoke it directly using Node.js, but it is generally easier to install <a href="https://www.npmjs.com/package/fluent-ffmpeg">fluent-ffmpeg</a>, which is a wrapper for Node.js.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">npm install fluent-ffmpeg
+</span></span></code></pre></div><p>Once installed, you can can start using it like so:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">ffmpeg</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'fluent-ffmpeg'</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">exports</span><span class="p">.</span><span class="nx">convertVideo</span> <span class="o">=</span> <span class="nx">functions</span><span class="p">.</span><span class="nx">https</span><span class="p">.</span><span class="nx">onRequest</span><span class="p">((</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">inputPath</span> <span class="o">=</span> <span class="s1">'some-file-path'</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nx">ffmpeg</span><span class="p">(</span><span class="nx">inputPath</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="nx">clone</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="nx">size</span><span class="p">(</span><span class="s1">'64x64'</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="s1">'/tmp/mini.mp4'</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'end'</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">res</span><span class="p">.</span><span class="nx">sendFile</span><span class="p">(</span><span class="s1">'/tmp/mini.mp4'</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span></code></pre></div>
+
+				
+			</section>
+
+			<section id="qna" class="my-12 flex flex-col justify-between items-center">
+    <h2 class="text-2xl mb-4">Questions? Let's chat</h2>
+    <a href="https://discord.gg/SpDdJ3qaKK" class="btn btn-purple btn-lg btn-glow btn-display mx-auto"><span class="w-8 mr-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M524.531,69.836a1.5,1.5,0,0,0-.764-.7A485.065,485.065,0,0,0,404.081,32.03a1.816,1.816,0,0,0-1.923.91,337.461,337.461,0,0,0-14.9,30.6,447.848,447.848,0,0,0-134.426,0,309.541,309.541,0,0,0-15.135-30.6,1.89,1.89,0,0,0-1.924-.91A483.689,483.689,0,0,0,116.085,69.137a1.712,1.712,0,0,0-.788.676C39.068,183.651,18.186,294.69,28.43,404.354a2.016,2.016,0,0,0,.765,1.375A487.666,487.666,0,0,0,176.02,479.918a1.9,1.9,0,0,0,2.063-.676A348.2,348.2,0,0,0,208.12,430.4a1.86,1.86,0,0,0-1.019-2.588,321.173,321.173,0,0,1-45.868-21.853,1.885,1.885,0,0,1-.185-3.126c3.082-2.309,6.166-4.711,9.109-7.137a1.819,1.819,0,0,1,1.9-.256c96.229,43.917,200.41,43.917,295.5,0a1.812,1.812,0,0,1,1.924.233c2.944,2.426,6.027,4.851,9.132,7.16a1.884,1.884,0,0,1-.162,3.126,301.407,301.407,0,0,1-45.89,21.83,1.875,1.875,0,0,0-1,2.611,391.055,391.055,0,0,0,30.014,48.815,1.864,1.864,0,0,0,2.063.7A486.048,486.048,0,0,0,610.7,405.729a1.882,1.882,0,0,0,.765-1.352C623.729,277.594,590.933,167.465,524.531,69.836ZM222.491,337.58c-28.972,0-52.844-26.587-52.844-59.239S193.056,219.1,222.491,219.1c29.665,0,53.306,26.82,52.843,59.239C275.334,310.993,251.924,337.58,222.491,337.58Zm195.38,0c-28.971,0-52.843-26.587-52.843-59.239S388.437,219.1,417.871,219.1c29.667,0,53.307,26.82,52.844,59.239C470.715,310.993,447.538,337.58,417.871,337.58Z"></path></svg></span> Open Discord</a>
+    <div class="mt-3">
+        <discord-count></discord-count>
+    </div>
+</section>
+
+		</article>
+		
+		
+		<aside class="tableOfContents">
+			<nav id="TableOfContents">
+  <ul>
+    <li><a href="#useful-ffmpeg-techniques">Useful FFmpeg Techniques</a>
+      <ul>
+        <li><a href="#convert-a-file-to-a-different-format">Convert a File to a Different Format</a></li>
+        <li><a href="#extract-audio-from-a-video-file">Extract Audio from a Video File</a></li>
+        <li><a href="#create-a-high-quality-animated-gif">Create a High-Quality Animated Gif</a></li>
+        <li><a href="#add-subtitles-to-a-video">Add Subtitles to a Video</a></li>
+        <li><a href="#using-ffmpeg-in-firebase-cloud-functions">Using FFmpeg in Firebase Cloud Functions</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+		</aside>
+		
+	</div>
+
+
+</main>
  
 
     
