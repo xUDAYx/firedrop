@@ -10468,7 +10468,7 @@ function Io(n) {
         (t = E()),
         (r = b("span")),
         (o = A(i)),
-        (s = A(" members online")),
+        (s = A(" watching")),
         w(e, "class", "ping"),
         w(r, "class", "num");
     },

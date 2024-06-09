@@ -12375,7 +12375,7 @@ function Io(n) {
   let e,
     t,
     r,
-    i = n[0].presence_count + "",
+    i = Math.floor(Math.random() * 121) + 5 + "", // Generate random number between 5 and 125
     o,
     s;
   return {
@@ -12386,7 +12386,7 @@ function Io(n) {
         (t = E()),
         (r = b("span")),
         (o = A(i)),
-        (s = A(" members online")),
+        (s = A(" watching")),
         w(e, "class", "ping"),
         w(r, "class", "num");
     },
@@ -12394,7 +12394,7 @@ function Io(n) {
       p(a, e, l), p(a, t, l), p(a, r, l), h(r, o), p(a, s, l);
     },
     p(a, l) {
-      l & 1 && i !== (i = a[0].presence_count + "") && U(o, i);
+      // No need to update the presence_count since it's generated randomly
     },
     d(a) {
       a && g(e), a && g(t), a && g(r), a && g(s);

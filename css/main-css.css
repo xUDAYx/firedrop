@@ -3900,6 +3900,12 @@ video {
   -webkit-background-clip: text;
 }
 
+.gradient-text-purple {
+  background-image: linear-gradient(45deg, #7d33ea, #9333ea, #a833ea, #9333ea, #7d33ea);
+  background-clip: text;
+  color: transparent;
+  -webkit-background-clip: text;
+}
 .gradient-text-green {
   background-image: linear-gradient(to top, var(--tw-gradient-stops));
   --tw-gradient-from: #15803d;
